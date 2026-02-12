@@ -1,18 +1,93 @@
-# Academic Paper Writer Skill
+# Academic Paper Writer Pro
 
-This skill provides an AI agent with the capability to research, draft, and format academic papers.
-It leverages web search and file operations to produce high-quality LaTeX or Markdown documents.
+一个专业的 AI Agent Skill，用于辅助学术论文的研究、撰写与排版。本 Skill 强制执行结构化的工作流程，利用精准的 `.docx` 和 `.pdf` 处理能力，确保您的文稿严格符合各类学术格式要求（如 IEEE、APA、各类高校模板）。
 
-## Installation
+## 1. 环境准备 (Prerequisites)
+
+在使用本 Skill 之前，您需要一个支持文件操作和命令行工具的 Agentic 环境。我们支持以下两种主流环境：
+
+### 选项 A: OpenCode (推荐)
+一个专为开发者工作流优化的开源 Agentic 框架。
+- **安装指南**: [OpenCode 官方文档](https://github.com/code-yeongyu/oh-my-opencode)
+- **快速安装**:
+  - **桌面版**:
+https://opencode.ai/download
+  - **命令行版**:
+  ```bash
+  npm install -g opencode
+  ```
+
+### 选项 B: Claude Code
+Anthropic 官方推出的 Agentic CLI 工具。
+- **安装指南**: [Claude Code 官方文档](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code)
+- **注意**: 请确保您的环境中已安装 `git` 和 `npm`。
+
+---
+
+## 2. 安装说明 (Installation)
+
+请按照以下步骤将本 Skill 导入到您的 Agent 环境中：
+
+### 第一步：克隆仓库
+导航至您的 Agent 工作区或 Skills 目录，并克隆本仓库：
 
 ```bash
-npx skills add ./academic-paper-writer
+# 克隆到您的 skills 目录
+git clone <your-repo-url> academic-paper-writer
 ```
 
-## Usage
+### 第二步：加载 Skill
+- **对于 OpenCode**: Agent 会自动检测配置路径下的 Skills。您可能需要重启会话，或显式要求 Agent "加载 academic-paper-writer skill"。
+- **对于 Claude Code**: 您可以通过在上下文窗口中提供此目录，或挂载该目录，指示 Claude 将其作为工具集使用。
 
-Once installed, you can ask the agent:
+---
 
-- "Write a research paper on [Topic]"
-- "Format this draft into LaTeX"
-- "Find references for [Subject] and create a bibliography"
+## 3. 使用指南 (Usage Guide)
+
+安装完成后，您可以直接使用自然语言控制整个写作与排版流程。
+
+### 第一步：准备文件
+为您的论文创建一个工作目录，并准备以下核心文件：
+1.  **论文草稿 (Draft)**：您的原始内容（Markdown、Text 或粗糙的 Word 文档）。
+2.  **格式规范/模板 (Style Guide)**：目标格式要求（例如 `IEEE_Template.docx` 或 `Submission_Guidelines.pdf`）。
+3.  **参考文献 (Optional)**：`.bib` 格式的参考文献库（推荐提供，以确保引用准确）。
+
+### 第二步：启动 Agent
+启动您的 Agent 并指向您的工作目录。
+
+```bash
+# OpenCode 示例
+opencode
+```
+
+### 第三步：触发 Skill
+使用自然语言指令启动工作流。
+
+**提示词示例 (Prompts):**
+> "帮我排版这篇论文。我已经在这个文件夹里放好了草稿和模板。"
+> "根据这个 PDF 指南，帮我修正引文格式和排版布局。"
+> "启动学术论文排版工作流。"
+
+### 接下来会发生什么？
+1.  **前置检查 (Pre-check)**：Agent 会验证您是否提供了草稿和格式指南。
+2.  **深度解析 (Analysis)**：Agent 将读取 `.docx` 或 `.pdf` 格式指南，理解字体、边距、引用样式等要求。
+3.  **执行排版 (Execution)**：Agent 将生成一份符合规范的论文版本，保存在 `outputs/` 目录中。
+4.  **精细化调整 (Refinement)**：您可以进一步要求改进，例如 "检查第三节的逻辑" 或 "为这些图表生成说明文字"。
+
+---
+
+## 4. 资源库 (Resources)
+
+本仓库提供了一些内置资源以帮助您快速上手：
+
+*   📂 **`templates/`**: 包含 IEEE, ACM, APA 等主流学术会议/期刊的官方模板下载链接。
+*   📂 **`examples/`**: 包含一份标准论文草稿 (`draft.md`) 和样式指南 (`style_guide.md`)，用于测试 Skill 的功能。
+*   ❓ **`TROUBLESHOOTING.md`**: 常见问题排查指南（如格式错乱、引用丢失等）。
+
+---
+
+## 致谢 (Credits & Acknowledgments)
+
+本项目利用了 **Anthropic** 提供的强大的文档处理能力。
+
+*   **Docx & PDF Skills**: 特别感谢 [Anthropic Skills Repository](https://github.com/anthropics/skills) 提供了与 Microsoft Word 和 PDF 文档交互的基础逻辑。这些模块赋予了本 Skill 精准的读取、编辑和排版能力。
