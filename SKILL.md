@@ -134,48 +134,33 @@ description: 基于规范目录结构的学术论文排版助手。支持 PDF / 
 
 ### 3.2 Pipeline B — 重排版管道（.doc / .docx 输入）
 
-适用场景：用户已有 Word 文档，需要按新的格式规范（如 IEEE）重新排版。
+适用场景：用户已有 Word 文档，需要按新的格式规范（如 IEEE）无损排版。为了绝对保留原文原生复杂公式（OMML）、图表和批注，本管道**严禁**使用 Markdown 中转提取方案，必须采用底层 XML 外观平移（Unpack-Edit-Pack）。
 
 #### 第一步：格式转换（仅 .doc）
 如果输入是 `.doc`（旧格式），先转换为 `.docx`：
 ```bash
-python scripts/office/soffice.py --headless --convert-to docx <input.doc>
+python docx/scripts/office/soffice.py --headless --convert-to docx <input.doc>
 ```
-参考 `docx/SKILL.md` 的"Converting .doc to .docx"章节。
 
-#### 第二步：格式规范解析
-按 §2.2 解析目标格式规范，确定所有排版参数。
+#### 第二步：解包 (Unpack) 与提取规范
+1. 按 §2.2 解析目标格式参数。
+2. 将输入 DOCX 解压到原生 XML 目录：
+```bash
+python docx/scripts/office/unpack.py <input.docx> resources/unpacked/
+```
 
-#### 第三步：内容提取与章节拆分
-1. 使用 pandoc 或 `docx/SKILL.md` 的 unpack 方法读取 `.docx` 内容。
-2. 按**一级标题**（或用户指定的拆分层级）将文档拆分为多个章节。
-3. 每个章节写入 `resources/md/section_N.md`，保留：
-   - 原始文本内容
-   - 公式（如有 OMML 原生公式，转为 LaTeX 保存在 MD 中）
-   - 表格结构（转为 Markdown 表格）
-   - 图片引用（提取图片到 `resources/figures/`，在 MD 中使用相对路径引用）
-4. 创建 `resources/config.json`（`pipeline: "B"`, `unit_type: "section"`）。
-5. 创建 `resources/checkpoint.json`（`current_unit: 1`，计数器归零）。
+#### 第三步：XML 级别样式重构 (Edit XML)
+此步骤不触碰主体内容逻辑。编写局部脚本直接从底层“换肤”：
+1. **替换 Styles (`word/styles.xml`)**：针对格式规范（如 IEEE），将 `styles.xml` 内的全部核心样式强制替换为预设样式名称及字体。
+2. **强制排定 `<w:sectPr>`**：在 `word/document.xml` 内，定位节区配置块，强制挂载双栏设定（如 `<w:cols w:num="2" w:space="360"/>`）及要求的纸张尺寸（如 US Letter: `<w:pgSz w:w="12240" w:h="15840"/>`）。
+3. **重新绑定 `<w:pStyle>`**：遍历所有 `<w:p>`，通过文字特征或旧样式的权重判定其所属层级，将其挂载为 IEEE 标准的 `Heading1`、`Normal`。这确保绝不触碰封装在同层段落内的公式结构 `<m:oMath>`。
 
-#### 第四步：逐章节重排版
-使用 `docx/SKILL.md` 中的 docx-js 创建新 DOCX 文档，按 §6 的格式参数配置样式（字体、页边距、页眉页脚等），然后逐章节填充内容：
-
-1. 读取 `section_N.md`。
-2. **文本排版**：按 §6 格式参数应用标题样式、正文字体字号、段间距、对齐方式。
-3. **公式处理**：MD 中的 LaTeX → `latex_to_omml.py` → 原生 OMML 插入 DOCX（参考 `docx/SKILL.md` §447-468 Formulas (OMML) 章节）。
-4. **图片嵌入**：从 `resources/figures/` 读取，按 §5.2 图片排版参数嵌入 DOCX。
-5. **表格转换**：Markdown 表格 → Word 表格 XML，按 §5.3 表格排版参数和 `docx/SKILL.md` Tables 章节生成。
-6. 追加到输出 DOCX。
-7. 更新 `checkpoint.json`（`current_unit += 1`、更新计数器）。
-
-#### 第五步：核查与上下文保护
-- **每 2 个章节**：核查排版质量，对照原文确认无信息丢失。
-- **每 4 个章节**：保存中间版本到 `outputs/<name>_checkpoint_s<N>.docx`，悬挂等待用户刷新上下文。
-- 核查不通过 → 记录到 `checkpoint.json` 的 `needs_review`。
-
-#### 第六步：汇总定稿
-1. 合并所有 `section_N.md` → `resources/compiled_paper.md`。
-2. 最终 DOCX 已在逐章节追加过程中构建完毕，保存为 `outputs/<name>_final_<date>.docx`。
+#### 第四步：原貌打包定稿 (Pack)
+对重构后的外观进行无缝打包验证：
+```bash
+python docx/scripts/office/pack.py resources/unpacked/ outputs/<name>_final_<date>.docx --original <input.docx>
+```
+这彻底废弃了高风险 Markdown 中转生成法，成就 100% 内容与排版无损保留！
 
 ---
 
