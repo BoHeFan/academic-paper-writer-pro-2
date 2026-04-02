@@ -321,12 +321,20 @@ python docx/scripts/office/pack.py resources/unpacked/ outputs/<name>_final_<dat
 | IEEE | `templates/ieee.md` | IEEE 会议论文、期刊论文 |
 | APA 第7版 | `templates/apa7.md` | 心理学、社会科学论文 |
 | 中国学位论文 | `templates/chinese_thesis.md` | 国内高校本硕博学位论文 |
+| ACM | `templates/acm.md` | ACM 计算机学会会议、期刊论文 |
+| Springer LNCS | `templates/springer_lncs.md` | 计算机科学讲义等学术专著 |
+| NeurIPS | `templates/nips.md` | NeurIPS 及机器学习相关会议 |
+| MLA | `templates/mla.md` | 人文学科、语言文学领域论文 |
 
 **查找规则**：
 1. 用户说 "按 IEEE 排版" → 读取 `templates/ieee.md`
 2. 用户说 "按 APA 排版" → 读取 `templates/apa7.md`
 3. 用户说 "按学位论文排版" / "按毕业论文排版" → 读取 `templates/chinese_thesis.md`
-4. 无法匹配 → 进入 §6.2 用户自定义流程
+4. 用户说 "按 ACM 排版" → 读取 `templates/acm.md`
+5. 用户说 "按 Springer 排版" / "按 LNCS 排版" → 读取 `templates/springer_lncs.md`
+6. 用户说 "按 NeurIPS 排版" / "按 NIPS 排版" → 读取 `templates/nips.md`
+7. 用户说 "按 MLA 排版" → 读取 `templates/mla.md`
+8. 无法匹配 → 进入 §6.2 用户自定义流程
 
 ### 6.2 用户自定义格式
 
