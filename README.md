@@ -11,14 +11,15 @@
 [![爱发电](https://img.shields.io/badge/爱发电-Support%20Me-FF69B4?style=for-the-badge&logo=buy-me-a-coffee&logoColor=white)](https://www.ifdian.net/item/1a20ed042f0711f1865a52540025c377)
 [![License](https://img.shields.io/github/license/tfboy1/academic-paper-writer?style=for-the-badge&color=blue)](LICENSE)
 [![GitHub Stars](https://img.shields.io/github/stars/tfboy1/academic-paper-writer?style=for-the-badge&logo=github&color=yellow)](https://github.com/tfboy1/academic-paper-writer/stargazers)
+[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-☕-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://www.creem.io/payment/prod_1yc40mIhKwwrc7iqFOG9G2)
 
 <br/>
 
 [![简体中文](https://img.shields.io/badge/简体中文-当前语言-red?style=flat-square)](#)
-[![English](https://img.shields.io/badge/English-README-blue?style=flat-square)](README_EN.md)
-[![日本語](https://img.shields.io/badge/日本語-README-blue?style=flat-square)](README_JA.md)
-[![Français](https://img.shields.io/badge/Français-README-blue?style=flat-square)](README_FR.md)
-[![Deutsch](https://img.shields.io/badge/Deutsch-README-blue?style=flat-square)](README_DE.md)
+[![English](https://img.shields.io/badge/English-README-blue?style=flat-square)](docs/README_EN.md)
+[![日本語](https://img.shields.io/badge/日本語-README-blue?style=flat-square)](docs/README_JA.md)
+[![Français](https://img.shields.io/badge/Français-README-blue?style=flat-square)](docs/README_FR.md)
+[![Deutsch](https://img.shields.io/badge/Deutsch-README-blue?style=flat-square)](docs/README_DE.md)
 
 <br/>
 

@@ -2,7 +2,7 @@
 
 # Academic Paper Writer Pro
 
-<img src="resources/banner.svg" alt="Academic Paper Writer Pro Banner" width="100%"/>
+<img src="../resources/banner.svg" alt="Academic Paper Writer Pro Banner" width="100%"/>
 
 <br/>
 
@@ -11,10 +11,11 @@
 [![爱発電](https://img.shields.io/badge/爱発電-Support%20Me-FF69B4?style=for-the-badge&logo=buy-me-a-coffee&logoColor=white)](https://www.ifdian.net/item/1a20ed042f0711f1865a52540025c377)
 [![License](https://img.shields.io/github/license/tfboy1/academic-paper-writer?style=for-the-badge&color=blue)](LICENSE)
 [![GitHub Stars](https://img.shields.io/github/stars/tfboy1/academic-paper-writer?style=for-the-badge&logo=github&color=yellow)](https://github.com/tfboy1/academic-paper-writer/stargazers)
+[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-☕-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://www.creem.io/payment/prod_1yc40mIhKwwrc7iqFOG9G2)
 
 <br/>
 
-[![简体中文](https://img.shields.io/badge/简体中文-README-blue?style=flat-square)](README.md)
+[![简体中文](https://img.shields.io/badge/简体中文-README-blue?style=flat-square)](../README.md)
 [![English](https://img.shields.io/badge/English-README-blue?style=flat-square)](README_EN.md)
 [![日本語](https://img.shields.io/badge/日本語-現在の言語-red?style=flat-square)](#)
 [![Français](https://img.shields.io/badge/Français-README-blue?style=flat-square)](README_FR.md)
