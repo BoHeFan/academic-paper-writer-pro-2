@@ -169,6 +169,10 @@ python docx/scripts/office/pack.py resources/unpacked/ outputs/<name>_final_<dat
 
 ### 3.3 Pipeline C — MD 直转管道（.md 输入）
 
+> [!CAUTION]
+> **绝对禁止使用 Pandoc 进行 Markdown 到 Word 的一键直转！** 
+> Pandoc 会丢失所有针对中国学位论文或顶会要求的高度定制化格式（如三线表渲染、首行缩进强绑定等）。必须且只能严格调用 **`docx/SKILL.md` 中定义的 `docx-js` (Node引擎)** 或底层的 `unpack -> edit XML -> pack` 脚本。
+
 适用场景：用户已有 Markdown 格式的论文，需要转为带格式的 Word 文档。
 
 #### 第一步：格式规范解析
@@ -182,14 +186,14 @@ python docx/scripts/office/pack.py resources/unpacked/ outputs/<name>_final_<dat
 5. 创建 `resources/checkpoint.json`（`current_unit: 1`，计数器归零）。
 
 #### 第三步：逐章节转换与排版
-使用 `docx/SKILL.md` 中的 docx-js 创建新 DOCX 文档，按 §6 的格式参数配置样式，然后逐章节转换内容：
+使用 `docx/SKILL.md` 中的 docx-js 创建新 DOCX 文档（必须通过代码映射所有样式！），按 §6 的格式参数配置样式，然后逐章节转换内容：
 
 1. **公式转换**：
    - 行内公式 `$...$` → 原生 OMML（通过 `ocr_kb/scripts/latex_to_omml.py`，接口见 `ocr_kb/SKILL.md` §0.7）
    - 独立公式 `$$...$$` → OMML 公式段落，编号靠右对齐
    - 更新 `checkpoint.json` 的 `global_equation_count`
 2. **表格转换**：
-   - Markdown 表格 → Word 表格 XML（按 §5.3 表格排版参数 + `docx/SKILL.md` Tables 章节）
+   - Markdown 表格 → Word 表格 XML（按 §5.3 表格排版参数 + `docx/SKILL.md` Tables 章节，**强制输出学术三线表**）
    - 更新 `global_table_count`
 3. **图片嵌入**：
    - `![caption](path)` → 检查图片文件是否存在
@@ -198,16 +202,18 @@ python docx/scripts/office/pack.py resources/unpacked/ outputs/<name>_final_<dat
    - 更新 `global_figure_count`
 4. **文本排版**：
    - 标题层级映射（`#` → Heading 1，`##` → Heading 2，...）
-   - 按 §6 格式参数应用字体、字号、段间距、对齐方式
+   - 按 §6 格式参数应用字体、字号、段间距、对齐方式。**特别是段落首行缩进（2字符）的精确控制**。
 5. 追加到输出 DOCX。
 6. 更新 `checkpoint.json`。
 
 #### 第四步：核查与上下文保护
 - 与 Pipeline B 完全相同（每 2 章节核查，每 4 章节悬挂）。
+- **增加物理拦截**：如果检测到没有按要求生成表格数据和足够的页面容量，则报废该生成的 docx。
 
 #### 第五步：汇总定稿
 1. 所有 `section_N.md` 已在拆分时创建，合并为 `resources/compiled_paper.md`。
 2. 最终 DOCX 保存为 `outputs/<name>_final_<date>.docx`。
+
 
 ---
 
