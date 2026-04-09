@@ -389,8 +389,33 @@ python docx/scripts/office/pack.py resources/unpacked/ outputs/<name>_final_<dat
 ```
 
 随后主动向用户确认以下可选增值服务：
-- **语言润色**：是否需要提升学术表达的专业度。
-- **多模态图例**：是否需要自动生成专业图例 (Caption)。
 - **逻辑校验**：检查段落间的论证逻辑。
+
+---
+
+## 8. 排版与环境避坑指南 (Troubleshooting & Best Practices)
+
+> [!WARNING]
+> 在执行自动排版和文稿生成时，经常会遇到 Markdown 解析与底层的环境冲突。排版流水管线中必须遵守以下防患规范：
+
+### 8.1 Markdown 嵌套加粗解析的正则剥离
+**问题**：`marked.lexer` 在处理复杂嵌套段落（如列表内部的加粗 `**text**`）时，由于默认不会深度递归提取 Inline 级的 `tokens`，易导致 `**` 符号直接作为标点纯文本泄漏到 DOCX 输出中。
+**规范**：在构建 `docx-js` 的段落（Paragraph）文本挂载时，**完全摒弃 AST 的样式标记匹配**，统一改用前置自定义正则表达式（如 `text.split(/(\*\*[\s\S]*?\*\*)/g)`）来显式切分，并直接映射为 `new TextRun({ text: innerText, bold: true })`。
+
+### 8.2 Mermaid 编译器的极端脆弱性与语法清洗
+**问题**：`npx mmdc` 对生成代码极度挑剔。例如 `usecaseDiagram` 在新版中被废弃不支持，以及在 `erDiagram` 中实体属性若尾随带有双引号 `"` 的外侧注释，会直接导致渲染线程死锁与命令行崩溃。
+**规范**：在调用执行环境前，利用替换脚本清洗不合规关键词（把旧语法强转 `flowchart`），并严格剔除危险引号。为防止 Windows 进程隔离出错，配置文件参数中需挂载 `{"args": ["--no-sandbox", "--disable-setuid-sandbox"]}`。
+
+### 8.3 跨平台正则匹配换行符陷阱 (\r\n)
+**问题**：在跨平台操作用 Regex 强制提取边界闭合代码块（如 `/```mermaid\n([\s\S]*?)```/g`）时，一旦遇到 Windows 宿主写入的文件采用 `\r\n` 回车换行符，匹配将直接失效导致大片丢图。
+**规范**：凡涉猎多行文本切削，务引入容错通配符 `\r?\n` 作为边界判断器，切勿硬编码单一换行类型。
+
+### 8.4 DOCX-JS ImageRun 组件隐性必填项崩溃
+**问题**：调用 `ImageRun` 插入 Buffer 图像流引擎时，若遗漏传入 `altText` 参数嵌套组合，编译流水线将毫无明确堆栈反馈地隐蔽崩溃（Packer throw catch 不明）。
+**规范**：`ImageRun` 对象初始化时，务必完全补齐挂载三个不可或缺的安全元数据字段：`altText: { title: "x", description: "x", name: "x" }`，以及静态注明 `type: "png"`。
+
+### 8.5 自动化更新时的操作句柄锁 (EBUSY) 防护
+**问题**：`fs.writeFileSync` 在意图输出刷新目标文档时，若文档恰好处于用户的浏览窗口进程内占用，即触发 `EBUSY: resource busy or locked` 阻截退出。
+**规范**：自动化脚本的导出端名称，应动态拼接自增式数字角标或是动态流转的时间戳（如 `_V3_CLEAN`），从系统层面免于强制覆写锁的冲突灾难。
 
 ---
