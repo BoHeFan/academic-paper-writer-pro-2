@@ -185,7 +185,15 @@ python docx/scripts/office/pack.py resources/unpacked/ outputs/<name>_final_<dat
 4. 创建 `resources/config.json`（`pipeline: "C"`, `unit_type: "section"`）。
 5. 创建 `resources/checkpoint.json`（`current_unit: 1`，计数器归零）。
 
-#### 第三步：逐章节转换与排版
+#### 第三步：Mermaid 架构图高清预渲染与自愈 (关键)
+如果 Markdown 中包含 ````mermaid```` 代码块，在注入 Word 之前，必须执行独立的高清渲染管线：
+1. **提取并保存**：将 Mermaid 代码块保存为独立的 `resources/figures/fig_N.mmd` 文件。
+2. **挂载环境拦截器**：受限于 Windows 严格的进程穿透策略，必须在根目录动态生成 `puppeteer-config.json`（内容：`{"args": ["--no-sandbox", "--disable-setuid-sandbox"]}`）。
+3. **调用 CLI 编译**：执行命令 `npx mmdc -i resources/figures/fig_N.mmd -o resources/figures/fig_N.png -b transparent -p puppeteer-config.json`。
+4. **编译容错自愈 (Auto-healing)**：若 mmdc 抛出报错（常因 subgraph 命名含空格、状态标量含括号/单双引号等非严谨语法引起），**Agent 必须捕获报错日志，主动运用 Python 或正则修复 `.mmd` 文本内的语法残缺**，随后重试编译指令，直至高清 `.png` 成功产出。严禁在此步骤静默跳过或残留乱码！
+5. **DOM 占位替换**：将 Markdown 原文中的复杂 Mermaid 块一律替换为标准图片引用语法 `![Figure N](resources/figures/fig_N.png)`，以便下一步原生嵌入。
+
+#### 第四步：逐章节转换与排版
 使用 `docx/SKILL.md` 中的 docx-js 创建新 DOCX 文档（必须通过代码映射所有样式！），按 §6 的格式参数配置样式，然后逐章节转换内容：
 
 1. **公式转换**：
@@ -206,11 +214,11 @@ python docx/scripts/office/pack.py resources/unpacked/ outputs/<name>_final_<dat
 5. 追加到输出 DOCX。
 6. 更新 `checkpoint.json`。
 
-#### 第四步：核查与上下文保护
+#### 第五步：核查与上下文保护
 - 与 Pipeline B 完全相同（每 2 章节核查，每 4 章节悬挂）。
 - **增加物理拦截**：如果检测到没有按要求生成表格数据和足够的页面容量，则报废该生成的 docx。
 
-#### 第五步：汇总定稿
+#### 第六步：汇总定稿
 1. 所有 `section_N.md` 已在拆分时创建，合并为 `resources/compiled_paper.md`。
 2. 最终 DOCX 保存为 `outputs/<name>_final_<date>.docx`。
 
