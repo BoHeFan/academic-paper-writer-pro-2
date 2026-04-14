@@ -73,7 +73,7 @@ npx skills add https://github.com/tfboy1/academic-paper-writer --skill academic-
 
 ```bash
 # 克隆到您的 skills 目录
-git clone <your-repo-url> academic-paper-writer
+git clone https://github.com/TFboy1/academic-paper-writer.git ./agent/skills/academic-paper-writer
 ```
 
 #### 2. 加载 Skill
@@ -86,13 +86,27 @@ git clone <your-repo-url> academic-paper-writer
 
 安装完成后，您可以直接使用自然语言控制整个写作与排版流程。
 
-### 第一步：准备文件
+### 场景一：纯小白一键自动写论文 (Auto Thesis Writing) 🚀
+如果您没有任何撰写基础，手中仅有项目代码或一份简单的立项任务书，您可以让 AI 从零开始为您**“先创作，后排版”**，全自动生成上万字的毕业设计或学术论文：
+
+1. **投喂资料与启动**：只需启动您的 Agent，并将您的项目代码文件夹的绝对路径告诉大模型，或者将其拖入当前工作目录。
+2. **下达小白“魔法指令”**：
+   > “阅读这个项目代码里的数据库和源码逻辑，帮我写一篇不少于15000字的毕业设计论文。要求：写完后直接使用 `academic-paper-writer-pro` 技能进行全自动排版，并最终导出成学校要求的 Word 文档！”
+3. **喝杯咖啡等待极客魔法**：Agent 将接管所有的脑力与体力劳动。它的运作逻辑为：**解析代码功能 -> 列举 IMRAD 标准学术大纲 -> 逐章节展开深度学术扩写 -> 设计并渲染出高清全彩架构图 (分离Mermaid渲染PNG) -> 最终调用排版引擎将大段文字与图片严丝合缝打包至 `.docx` 中。**
+4. **一键提取与提交**：待 AI 弹出完成报告后，前往本目录下的 `outputs/` 文件夹直接提取装订成册的 Word 成品！所有生成的架构图原文件也会被悉心收藏在 `resources/figures/` 供您单独取用。
+
+---
+
+### 场景二：已有草稿的专业学术排版 (Professional Typesetting)
+如果您已经靠自己完成了论文的中期草稿（支持 Markdown、Word、PDF 等格式文件），只需借助本技能完成最终的底层无损学术排版。
+
+#### 第一步：准备文件
 为您的论文创建一个工作目录，并准备以下核心文件：
 1.  **论文草稿 (Draft)**：您的原始内容（Markdown、Text 或粗糙的 Word 文档）。
 2.  **格式规范/模板 (Style Guide)**：目标格式要求（例如 `IEEE_Template.docx` 或 `Submission_Guidelines.pdf`）。
 3.  **参考文献 (Optional)**：`.bib` 格式的参考文献库（推荐提供，以确保引用准确）。
 
-### 第二步：启动 Agent
+#### 第二步：启动 Agent
 启动您的 Agent 并指向您的工作目录。
 
 ```bash
@@ -100,34 +114,22 @@ git clone <your-repo-url> academic-paper-writer
 opencode
 ```
 
-### 第三步：触发 Skill
-使用自然语言指令启动工作流。我们的系统内置了多种主流学术期刊和会议的排版规范（包括 IEEE、ACM、Springer LNCS、NeurIPS、APA、MLA 以及中国学位论文格式），你可以直接指出你需要哪种格式。
+#### 第三步：下达排版指令
+使用自然语言指令启动排版工作流。本系统内置了多种主流学术规范（IEEE、ACM、Springer LNCS、NeurIPS、APA、MLA 及中国学位论文格式）。直接对 Agent 说：
 
 **无需提供模板的直接排版指令 (Prompts):**
-> "请把这篇 Word 论文草稿按 IEEE 格式重新排版。"
-> "把这个 Markdown 转换为 Springer LNCS 格式的 Word 文档。"
-> "将这部分内容按照 ACM 标准双栏格式排版。"
-> "按照 NeurIPS 的要求进行单栏排版。"
-> "使用 MLA 格式要求排版这篇人文学科作业。"
-> "帮我把这篇毕业论文换成中国学位论文格式。"
+> "请使用 `academic-paper-writer-pro` 技能，把这篇 Word 论文草稿按 IEEE 格式重新排版。"
+> "使用 `academic-paper-writer-pro` 技能，将这个 Markdown 转换为 Springer LNCS 格式的 Word 文档。"
+> "调用 `academic-paper-writer-pro` 帮我把这篇毕业论文换成严格的中国学位论文规范格式。"
 
 **提供自定义模板的排版指令 (Prompts):**
-> "帮我排版这篇论文。我已经在这个文件夹里放好了草稿和自定义的模板文件。"
-> "根据这个 PDF 排版指南，帮我修正引文格式和排版布局。"
+> "使用 `academic-paper-writer-pro` 排版这篇草稿。我已经放好了自定义的 Word 模板文件。"
+> "使用 `academic-paper-writer-pro` 技能，根据文件夹里这个 PDF 指南帮我无损修正论文的引文格式与排版布局。"
 
-### 接下来会发生什么？
-1.  **前置检查 (Pre-check)**：Agent 会验证您是否提供了草稿和格式指南。
-2.  **深度解析 (Analysis)**：Agent 将读取 `.docx` 或 `.pdf` 格式指南，理解字体、边距、引用样式等要求。
-3.  **执行排版 (Execution)**：Agent 将生成一份符合规范的论文版本，保存在 `outputs/` 目录中。
-4.  **精细化调整 (Refinement)**：您可以进一步要求改进，例如 "检查第三节的逻辑" 或 "为这些图表生成说明文字"。
-
-### 第四步：纯小白一键自动写论文 (Auto Thesis Writing) 🚀 
-如果您没有任何开发基础，手中只有写了一半的代码，或者只有一个简单的立项任务书，您可以让 AI 从零开始为您**全自动生成成千上万字的毕业设计/长篇学术论文**：
-1. **投喂资料**：只需将您的项目代码文件夹的位置告诉大模型，或者将他拖入拖入工作目录。
-2. **下达小白“魔法指令”**：
-   > “帮我阅读这个项目代码里的数据库和界面，写一篇不少于15000字的毕业设计论文。注意：用 `academic-paper-writer-pro` 技能全自动排版，并最终帮我导出成学校要求的 Word 文档！”
-3. **喝杯咖啡等待极客魔法**：Agent 会立刻接管一切。它会自动帮您**列举高大上的 IMRAD 标准大纲 -> 逐章节进行学术扩写 -> 设计并渲染出高清全彩架构图 (Mermaid转PNG) -> 套用标准宋体/黑体生成严丝合缝的最终 `.docx`。**
-4. **一键提交**：待 AI 提示执行完毕后，前往 `outputs/` 文件夹提取成品直接提交！如果有 AI 绘制的专属图片，它们也会整齐地归档在 `resources/figures/` 文件夹中为您服务。
+#### 接下来会发生什么？
+1.  **自动研判 (Analysis)**：Agent 验证资料并提取特定的字体、边距、引用样式等要求。
+2.  **底层执行 (Execution)**：Agent 将通过无损的三线表还原、公式转换（原生OMML）以及高清图片挂载，生成一份符合规范的排版版本。
+3.  **最终输出与精调 (Refinement)**：排版完毕的 `.docx` 将保存在 `outputs/` 目录。您可以随时进一步指令：“检查第三节逻辑”，或是 “为这些图表补全说明文字”。
 
 ---
 
