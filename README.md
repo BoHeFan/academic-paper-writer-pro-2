@@ -1,31 +1,28 @@
 <div align="center">
 
-# Academic Paper Writer Pro
+# Academic Paper Writer Pro 2
 
-<img src="resources/banner.svg" alt="Academic Paper Writer Pro Banner" width="100%"/>
+<img src="resources/banner.svg" alt="Academic Paper Writer Pro 2 Banner" width="100%"/>
 
 <br/>
 
 [![Discord](https://img.shields.io/badge/Discord-Join%20Chat-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/DrqtEjk6)
-[![Skills.sh](https://img.shields.io/badge/Skills.sh-Install%20Skill-00C853?style=for-the-badge&logo=hackthebox&logoColor=white)](https://skills.sh/tfboy1/academic-paper-writer/academic-paper-writer-pro)
+[![Skills.sh](https://img.shields.io/badge/Skills.sh-Install%20Skill-00C853?style=for-the-badge&logo=hackthebox&logoColor=white)](https://skills.sh/tfboy1/academic-paper-writer-pro-2/academic-paper-writer-pro-2)
 [![爱发电](https://img.shields.io/badge/爱发电-Support%20Me-FF69B4?style=for-the-badge&logo=buy-me-a-coffee&logoColor=white)](https://www.ifdian.net/item/1a20ed042f0711f1865a52540025c377)
 [![License](https://img.shields.io/github/license/tfboy1/academic-paper-writer?style=for-the-badge&color=blue)](LICENSE)
-[![GitHub Stars](https://img.shields.io/github/stars/tfboy1/academic-paper-writer?style=for-the-badge&logo=github&color=yellow)](https://github.com/tfboy1/academic-paper-writer/stargazers)
-[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-☕-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://www.creem.io/payment/prod_1yc40mIhKwwrc7iqFOG9G2)
+[![GitHub Stars](https://img.shields.io/github/stars/tfboy1/academic-paper-writer?style=for-the-badge&logo=github&color=yellow)](https://github.com/TFboy1/academic-paper-writer/stargazers)
 
 <br/>
 
 [![简体中文](https://img.shields.io/badge/简体中文-当前语言-red?style=flat-square)](#)
 [![English](https://img.shields.io/badge/English-README-blue?style=flat-square)](docs/README_EN.md)
-[![日本語](https://img.shields.io/badge/日本語-README-blue?style=flat-square)](docs/README_JA.md)
-[![Français](https://img.shields.io/badge/Français-README-blue?style=flat-square)](docs/README_FR.md)
-[![Deutsch](https://img.shields.io/badge/Deutsch-README-blue?style=flat-square)](docs/README_DE.md)
 
 <br/>
 
-一个专业的 AI Agent Skill，用于辅助学术论文的研究、撰写与排版。<br/>
+一个专业的 AI Agent Skill，用于辅助学术论文的研究、撰写、排版与**降AI率**。<br/>
 本 Skill 强制执行结构化的工作流程，利用精准的 `.docx` 和 `.pdf` 处理能力，<br/>
-确保您的文稿严格符合各类学术格式要求（如 IEEE、ACM、Springer、NeurIPS、MLA、APA 及各类高校模板）。
+确保您的文稿严格符合各类学术格式要求（如 IEEE、ACM、Springer、NeurIPS、MLA、APA 及各类高校模板）。<br/>
+**🆕 新增 Pipeline E 降AI率功能**：支持中文改写和英文LaTeX去AI化，有效降低AI检测率。
 
 </div>
 
@@ -56,13 +53,13 @@ Anthropic 官方推出的 Agentic CLI 工具。
 
 考虑到不同用户的使用环境，我们提供了 **一键自动化安装** 和 **手动配置** 两种方式。
 
-> **🔗 官方 Skill 主页**: [https://skills.sh/tfboy1/academic-paper-writer/academic-paper-writer-pro](https://skills.sh/tfboy1/academic-paper-writer/academic-paper-writer-pro)
+> **🔗 官方 Skill 主页**: [https://skills.sh/tfboy1/academic-paper-writer-pro-2/academic-paper-writer-pro-2](https://skills.sh/tfboy1/academic-paper-writer-pro-2/academic-paper-writer-pro-2)
 
 ### 选项一：一键自动化安装 (推荐)
 如果您使用的是兼容的 Agentic 框架（如 Claude Code 或 OpenCode），只需在您的工作目录下运行以下一条命令，系统将自动拉取代码仓库并配置依赖，免去手动操作：
 
 ```bash
-npx skills add https://github.com/tfboy1/academic-paper-writer --skill academic-paper-writer-pro
+npx skills add https://github.com/TFboy1/academic-paper-writer-pro-2 --skill academic-paper-writer-pro-2
 ```
 
 ### 选项二：手动克隆与配置
@@ -73,11 +70,11 @@ npx skills add https://github.com/tfboy1/academic-paper-writer --skill academic-
 
 ```bash
 # 克隆到您的 skills 目录
-git clone https://github.com/TFboy1/academic-paper-writer.git ./agent/skills/academic-paper-writer
+git clone https://github.com/TFboy1/academic-paper-writer-pro-2.git ./agent/skills/academic-paper-writer-pro-2
 ```
 
 #### 2. 加载 Skill
-- **对于 OpenCode**: Agent 会自动检测配置路径下的 Skills。您可能需要重启会话，或显式要求 Agent "加载 academic-paper-writer skill"。
+- **对于 OpenCode**: Agent 会自动检测配置路径下的 Skills。您可能需要重启会话，或显式要求 Agent "加载 academic-paper-writer-pro-2 skill"。
 - **对于 Claude Code**: 您可以通过在上下文窗口中提供此目录，或挂载该目录，指示 Claude 将其作为工具集使用。
 
 ---
@@ -118,9 +115,9 @@ opencode
 使用自然语言指令启动排版工作流。本系统内置了多种主流学术规范（IEEE、ACM、Springer LNCS、NeurIPS、APA、MLA 及中国学位论文格式）。直接对 Agent 说：
 
 **无需提供模板的直接排版指令 (Prompts):**
-> "请使用 `academic-paper-writer-pro` 技能，把这篇 Word 论文草稿按 IEEE 格式重新排版。"
-> "使用 `academic-paper-writer-pro` 技能，将这个 Markdown 转换为 Springer LNCS 格式的 Word 文档。"
-> "调用 `academic-paper-writer-pro` 帮我把这篇毕业论文换成严格的中国学位论文规范格式。"
+> "请使用 `academic-paper-writer-pro-2` 技能，把这篇 Word 论文草稿按 IEEE 格式重新排版。"
+> "使用 `academic-paper-writer-pro-2` 技能，将这个 Markdown 转换为 Springer LNCS 格式的 Word 文档。"
+> "调用 `academic-paper-writer-pro-2` 帮我把这篇毕业论文换成严格的中国学位论文规范格式。"
 
 **提供自定义模板的排版指令 (Prompts):**
 > "使用 `academic-paper-writer-pro` 排版这篇草稿。我已经放好了自定义的 Word 模板文件。"
@@ -130,6 +127,73 @@ opencode
 1.  **自动研判 (Analysis)**：Agent 验证资料并提取特定的字体、边距、引用样式等要求。
 2.  **底层执行 (Execution)**：Agent 将通过无损的三线表还原、公式转换（原生OMML）以及高清图片挂载，生成一份符合规范的排版版本。
 3.  **最终输出与精调 (Refinement)**：排版完毕的 `.docx` 将保存在 `outputs/` 目录。您可以随时进一步指令：“检查第三节逻辑”，或是 “为这些图表补全说明文字”。
+
+---
+
+### 场景三：论文降AI率处理 (AI Detection Rate Reduction) 🆕
+
+如果您担心论文被AI检测工具识别，可以使用新增的 **Pipeline E 降AI率功能**，将AI生成的文本改写为更自然的学术表达。
+
+#### 功能特点
+
+- **中文改写**：动词扩展、词汇替换、句式调整，保持技术术语不变
+- **英文LaTeX去AI化**：词汇规范化、结构自然化、移除机械表达
+- **技术术语保护**：自动识别并保护所有技术术语不被修改
+
+#### 使用方式
+
+**方式一：独立使用**
+```
+"使用 ai-reduction 功能对这篇论文进行降AI率处理"
+"帮我降低这篇论文的AI检测率"
+"对这个 LaTeX 文件进行去AI化"
+```
+
+**方式二：Pipeline D 后自动调用**
+在论文内容生成完成后，系统会询问：
+> "论文初稿已生成。是否需要自动进行降AI率处理？"
+
+**方式三：指定语言模式**
+```
+"使用 ai-reduction 的中文模式改写这段文字"
+"对这个英文 LaTeX 片段进行去AI化处理"
+```
+
+#### 支持的格式
+
+| 格式 | 说明 |
+|------|------|
+| `.md` | Markdown 文件，按段落/章节处理 |
+| `.tex` | LaTeX 源文件，保持格式改写 |
+| `.docx` | Word 文档，提取内容后处理 |
+| 纯文本 | 直接处理 |
+
+#### 示例效果
+
+**中文改写示例**：
+
+原文：
+```
+本系统采用Django框架进行开发，通过RESTful API实现前后端交互。
+```
+
+改写后：
+```
+本系统选用Django框架来开展开发工作，借助RESTful API来实现前后端的交互。
+```
+
+**英文LaTeX去AI化示例**：
+
+原文：
+```latex
+First and foremost, we leverage the transformer architecture to delve into 
+the nuanced patterns in the data.
+```
+
+改写后：
+```latex
+We use the transformer architecture to examine the subtle patterns in the data.
+```
 
 ---
 
