@@ -759,3 +759,146 @@ Pipeline C (排版)
 ```
 
 ---
+
+## 15. 任务完成后的清理协议 (Post-Task Cleanup Protocol)
+
+> [!IMPORTANT]
+> **所有管道任务完成后，必须执行清理操作**，仅保留标准输出文件，删除所有过程性中间文件。
+
+### 15.1 清理原则
+
+| 原则 | 说明 |
+|------|------|
+| **保留最终产物** | `outputs/` 目录下的所有文件必须保留 |
+| **保留用户文件** | 用户原始提供的源文件（.pdf, .docx, .md等）不得删除 |
+| **删除中间文件** | `resources/` 下的所有过程性文件必须清理 |
+| **保留脚本** | `resources/scripts/` 可保留（可复用） |
+
+### 15.2 清理范围
+
+**必须删除的目录和文件**：
+
+```
+resources/
+├── pages/              # 删除：切分出的PNG图片
+├── figures/            # 删除：提取/裁剪的配图（已嵌入DOCX）
+├── md/                 # 删除：提取的Markdown文件
+├── ai_reduction/       # 删除：降AI率中间文件
+│   ├── original/
+│   └── processed/
+├── compiled_paper.md   # 删除：汇总的Markdown
+├── config.json         # 删除：任务配置
+└── checkpoint.json     # 删除：进度记录
+
+# 保留
+resources/scripts/      # 保留：可复用的Python脚本
+```
+
+**必须保留的文件**：
+
+```
+outputs/
+├── <name>_final_<date>.docx    # 保留：最终排版文档
+├── <name>_reduced_<date>.md    # 保留：降AI率输出
+├── references.bib              # 保留：参考文献
+└── *_checkpoint_*.docx         # 保留：核查点版本（可选）
+
+# 用户原始文件
+<source>.pdf                    # 保留：用户源文件
+<source>.docx                   # 保留：用户源文件
+<source>.md                     # 保留：用户源文件
+```
+
+### 15.3 清理执行流程
+
+任务完成后，Agent 必须执行以下清理流程：
+
+```
+Step 1: 确认任务完成
+├── 检查 outputs/ 是否有最终产物
+├── 确认用户已获取/确认输出文件
+└── 询问用户是否需要保留特定中间文件
+
+Step 2: 执行清理
+├── 删除 resources/pages/
+├── 删除 resources/figures/
+├── 删除 resources/md/
+├── 删除 resources/ai_reduction/
+├── 删除 resources/compiled_paper.md
+├── 删除 resources/config.json
+└── 删除 resources/checkpoint.json
+
+Step 3: 清理报告
+├── 列出已删除的目录/文件
+├── 列出保留的文件
+└── 确认磁盘空间释放情况
+```
+
+### 15.4 清理命令参考
+
+**Windows (PowerShell)**：
+```powershell
+# 删除中间文件（保留scripts）
+Remove-Item -Path "resources/pages" -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item -Path "resources/figures" -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item -Path "resources/md" -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item -Path "resources/ai_reduction" -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item -Path "resources/compiled_paper.md" -Force -ErrorAction SilentlyContinue
+Remove-Item -Path "resources/config.json" -Force -ErrorAction SilentlyContinue
+Remove-Item -Path "resources/checkpoint.json" -Force -ErrorAction SilentlyContinue
+```
+
+**Linux/macOS (Bash)**：
+```bash
+# 删除中间文件（保留scripts）
+rm -rf resources/pages resources/figures resources/md resources/ai_reduction
+rm -f resources/compiled_paper.md resources/config.json resources/checkpoint.json
+```
+
+### 15.5 清理确认报告
+
+清理完成后，必须输出以下报告：
+
+```
+【清理报告】
+任务类型：<Pipeline A/B/C/D/E>
+最终产物：outputs/<文件列表>
+保留文件：
+  - <用户源文件>
+  - outputs/<最终文档>
+已清理：
+  - resources/pages/ (N 个文件)
+  - resources/figures/ (N 个文件)
+  - resources/md/ (N 个文件)
+  - resources/ai_reduction/ (N 个文件)
+  - resources/config.json
+  - resources/checkpoint.json
+保留目录：
+  - resources/scripts/ (可复用脚本)
+磁盘空间释放：约 N MB
+```
+
+### 15.6 特殊情况处理
+
+| 情况 | 处理方式 |
+|------|----------|
+| 用户要求保留中间文件 | 跳过清理，在报告中说明 |
+| 任务失败/中断 | 保留 checkpoint.json 以便恢复 |
+| 多次任务叠加 | 先清理旧文件再开始新任务 |
+| 用户指定输出路径 | 按用户指定路径保留，清理默认路径 |
+
+### 15.7 自动清理触发条件
+
+以下情况**自动触发清理**（无需用户确认）：
+
+1. 任务成功完成且用户确认收到最终产物
+2. 用户显式要求"清理"或"删除中间文件"
+3. 开始新任务前检测到旧中间文件（已在 §1.1 环境清理确认中处理）
+
+以下情况**不执行清理**：
+
+1. 任务失败或中断
+2. 用户明确要求保留中间文件
+3. checkpoint.json 显示任务未完成
+
+---

@@ -229,13 +229,45 @@ academic-paper-writer-pro-2/
 ├── ocr_kb/                     # Pipeline A: OCR 管道
 ├── templates/                  # 格式模板 (IEEE, ACM, APA 等)
 ├── examples/                   # 示例文件
-├── resources/                  # 资源目录
+├── resources/                  # 中间文件目录（任务完成后自动清理）
+│   ├── pages/                  # [临时] 切分出的PNG图片
+│   ├── figures/                # [临时] 提取的配图
+│   ├── md/                     # [临时] Markdown文件
+│   └── scripts/                # [保留] 可复用脚本
+├── outputs/                    # 最终输出目录（保留）
 └── README.md                   # 本文件
 ```
 
 ---
 
-## 5. 资源库 (Resources)
+## 5. 自动清理机制 (Auto Cleanup)
+
+> [!TIP]
+> **任务完成后自动清理中间文件**，仅保留最终产物和用户源文件，节省磁盘空间。
+
+### 清理规则
+
+| 目录/文件 | 处理 | 说明 |
+|-----------|------|------|
+| `outputs/` | ✅ 保留 | 最终排版文档、降AI率输出 |
+| `resources/scripts/` | ✅ 保留 | 可复用的Python脚本 |
+| 用户源文件 | ✅ 保留 | .pdf, .docx, .md 等原始文件 |
+| `resources/pages/` | ❌ 删除 | 切分出的PNG图片 |
+| `resources/figures/` | ❌ 删除 | 提取/裁剪的配图 |
+| `resources/md/` | ❌ 删除 | 提取的Markdown文件 |
+| `resources/ai_reduction/` | ❌ 删除 | 降AI率中间文件 |
+| `resources/config.json` | ❌ 删除 | 任务配置 |
+| `resources/checkpoint.json` | ❌ 删除 | 进度记录 |
+
+### 清理触发条件
+
+- ✅ 任务成功完成且用户确认收到最终产物
+- ✅ 用户显式要求"清理"或"删除中间文件"
+- ❌ 任务失败或中断（保留checkpoint以便恢复）
+
+---
+
+## 6. 资源库 (Resources)
 
 本仓库提供了一些内置资源以帮助您快速上手：
 
@@ -245,7 +277,7 @@ academic-paper-writer-pro-2/
 
 ---
 
-## 6. 致谢 (Credits & Acknowledgments)
+## 7. 致谢 (Credits & Acknowledgments)
 
 本项目基于以下开源项目进行增强开发：
 
@@ -255,7 +287,7 @@ academic-paper-writer-pro-2/
 
 ---
 
-## 7. License
+## 8. License
 
 本项目采用与原项目相同的开源协议。
 
