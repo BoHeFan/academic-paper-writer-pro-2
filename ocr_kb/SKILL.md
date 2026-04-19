@@ -1,10 +1,9 @@
----
-name: ocr_kb
-description: 使用多模态大模型逐页读取长文档图片，精确提取文本、LaTeX公式和独立科研配图。支持环境清理、断点恢复、全局编号管理、失败页标记与部分重跑。逐页生成DOCX并每两页核查质量。本 Skill 专用于 Pipeline A（OCR 管道），处理 PDF 输入。中间产物全部放在 resources/，最终交付物放在 outputs/。Pipeline B / C 定义在主 SKILL.md 中。
-license: Proprietary. LICENSE.txt has complete terms
----
-
 # 论文排版与整理完全工作流 (Iterative OCR & Typesetting Pipeline)
+
+<!--
+本文件是 Pipeline A (OCR管道) 的子模块规范，通过主 SKILL.md 调用。
+不要在此添加 YAML frontmatter，否则会被识别为独立 skill。
+-->
 
 ## 0. 目录规范 (Directory Convention)
 

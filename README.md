@@ -19,6 +19,10 @@
 确保您的文稿严格符合各类学术格式要求（如 IEEE、ACM、Springer、NeurIPS、MLA、APA 及各类高校模板）。<br/>
 **🆕 新增 Pipeline E 降AI率功能**：支持中文改写和英文LaTeX去AI化，有效降低AI检测率。
 
+<br/>
+
+> **📌 这是一个统一的 Skill** — 安装后只需调用 `academic-paper-writer-pro-2` 即可使用所有功能，无需分别调用子模块。
+
 </div>
 
 ---

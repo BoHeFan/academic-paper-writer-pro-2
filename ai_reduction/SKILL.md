@@ -1,9 +1,9 @@
----
-name: ai-reduction
-description: 论文降AI率模块（Pipeline E）。将AI生成的文本改写为更自然的学术表达，支持中文改写和英文LaTeX去AI化。自动检测语言类型，逐段落应用改写规则，保持技术术语不变，输出改写报告。
----
-
 # 论文降AI率工作流 (AI Detection Rate Reduction Pipeline)
+
+<!--
+本文件是 Pipeline E 的子模块规范，通过主 SKILL.md 调用。
+不要在此添加 YAML frontmatter，否则会被识别为独立 skill。
+-->
 
 > [!IMPORTANT]
 > 本文件是 **Pipeline E — AI降重管道** 的完整规范。用于将AI生成的论文文本改写为更自然、更符合人类写作习惯的学术表达，降低AI检测率。

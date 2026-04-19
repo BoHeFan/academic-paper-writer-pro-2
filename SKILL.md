@@ -1,14 +1,37 @@
 ---
 name: academic-paper-writer-pro-2
-description: 基于规范目录结构的学术论文排版助手（增强版）。支持 PDF / .doc / .docx / .md 多种输入格式，自动选择 OCR 管道、重排版管道或 MD 直转管道。新增 Pipeline E 论文降AI率功能，支持中文改写和英文LaTeX去AI化，降低AI检测率。包含环境清理确认、断点恢复、智能配图裁剪、逐单元增量生成 DOCX、双单元质量核查、中间状态保存和 BibTeX 参考文献管理。所有中间文件放 resources/，最终产物放 outputs/。
+description: 学术论文写作与排版助手（增强版）。支持PDF/Word/Markdown多种格式，自动选择OCR管道、重排版管道或MD直转管道。新增Pipeline E降AI率功能，支持中文改写和英文LaTeX去AI化。包含环境清理、断点恢复、智能配图裁剪、逐单元增量生成DOCX、质量核查、BibTeX参考文献管理。所有中间文件放resources/，最终产物放outputs/。
 ---
 
-# 学术论文专家（主路由）
+# 学术论文专家 - Academic Paper Writer Pro 2
+
+> [!TIP]
+> **这是一个统一的 Skill**，安装后只需调用 `academic-paper-writer-pro-2` 即可使用所有功能。
+> 
+> **快速使用**：
+> - 论文排版："使用 academic-paper-writer-pro-2 把这篇论文按 IEEE 格式排版"
+> - 降AI率："使用 academic-paper-writer-pro-2 对这篇论文进行降AI率处理"
+> - 自动写作："使用 academic-paper-writer-pro-2 基于这个项目代码写一篇毕业论文"
+
+## 功能概览 (Feature Overview)
+
+| Pipeline | 功能 | 触发场景 |
+|----------|------|----------|
+| **Pipeline A** | OCR 管道 | PDF 输入，逐页识别提取 |
+| **Pipeline B** | 重排版管道 | Word 输入，按新格式排版 |
+| **Pipeline C** | MD 直转管道 | Markdown 输入，转为 Word |
+| **Pipeline D** | 内容生成管道 | 项目代码/数据，智能生成论文 |
+| **Pipeline E** | 降AI率管道 🆕 | 降低 AI 检测率，中英文改写 |
+
+---
 
 > [!IMPORTANT]
-> 本文件是**主路由入口 + Pipeline B/C 定义 + 排版格式规范库**。Pipeline A（OCR 管道）的详细规范请参见 `ocr_kb/SKILL.md`。
-> 所有管道的 DOCX 生成均使用 `docx/SKILL.md` 中定义的方法（docx-js 创建新文档 / unpack-edit-pack 编辑现有文档）。
-> **Pipeline E（降AI率管道）**的详细规范请参见 `ai_reduction/SKILL.md`。
+> 本文件是**主路由入口 + Pipeline B/C 定义 + 排版格式规范库**。
+> - Pipeline A（OCR 管道）详细规范：`ocr_kb/SKILL.md`
+> - Pipeline D（内容生成）详细规范：`content_generation/SKILL.md`
+> - Pipeline E（降AI率）详细规范：`ai_reduction/SKILL.md`
+> - DOCX 操作技术实现：`docx/SKILL.md`
+> - PDF 操作技术实现：`pdf/SKILL.md`
 
 ## 0. 目录规范 (Directory Convention)
 

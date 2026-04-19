@@ -1,9 +1,9 @@
----
-name: content_generation
-description: 基于代码仓库、笔记、实验数据或论文要求，全自动智能撰写学术论文初稿的主线管线。强制分章逐批检索代码、分步输出，内置规避上下文超限机制和人工审核卡点，无缝衔接格式化引擎。内置严格的学术 Prompt 准则与多模态图表检索能力。
----
-
 # 论文内容智能生成工作流 (Automated Academic Content Generation Pipeline)
+
+<!--
+本文件是 Pipeline D 的子模块规范，通过主 SKILL.md 调用。
+不要在此添加 YAML frontmatter，否则会被识别为独立 skill。
+-->
 
 本 Skill 专用于 **Pipeline D**。解决"有项目、有数据但没时间写规范八股文"的痛点，将源码或离散数据提炼串联成结构完整的学术论文初稿，严格控制幻觉和上下文崩溃，并**绝对保障顶级学术论文的遣词造句与深度论证标准**。
 
